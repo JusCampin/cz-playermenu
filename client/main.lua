@@ -9,12 +9,12 @@ if not CZCore then
 end
 
 -- lightweight logger that prefers CZLog when available
-local Log = {}
-function Log.info(msg) if CZLog and CZLog.info then CZLog.info(msg) else print(tostring(msg)) end end
-function Log.warn(msg) if CZLog and CZLog.warn then CZLog.warn(msg) else print(tostring(msg)) end end
-function Log.error(msg) if CZLog and CZLog.error then CZLog.error(msg) else print(tostring(msg)) end end
-
 local CoreAPI = CZCore
+local Log = {
+    info = function(msg) if CoreAPI and CoreAPI.Log and CoreAPI.Log.info then CoreAPI.Log.info(msg) else print(tostring(msg)) end end,
+    warn = function(msg) if CoreAPI and CoreAPI.Log and CoreAPI.Log.warn then CoreAPI.Log.warn(msg) else print(tostring(msg)) end end,
+    error = function(msg) if CoreAPI and CoreAPI.Log and CoreAPI.Log.error then CoreAPI.Log.error(msg) else print(tostring(msg)) end end,
+}
 
 AddEventHandler('cz-core:ready', function(core)
     if type(core) == 'table' then
@@ -25,4 +25,3 @@ end)
 
 -- ensure we request the API in case the ready event was missed
 TriggerEvent('cz-core:request_api')
-local CoreAPI = CZCore
